@@ -1,0 +1,7 @@
+venv
+openvoice
+outputs
+Remi_voice/checkpoints_v2
+Remi_voice/processed
+Remi_voice/spongebib.mp3
+Remi_voice/missminutes.mp3
