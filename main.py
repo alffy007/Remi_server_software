@@ -10,15 +10,15 @@ import websockets
 load_dotenv(override=True)
 
 MODEL_PROVIDER = os.getenv("MODEL_PROVIDER")
-CHARACTER_NAME = os.getenv("CHARACTER_NAME")
-TTS_PROVIDER = os.getenv("TTS_PROVIDER")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
-OPENAI_TTS_URL = os.getenv("OPENAI_TTS_URL")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
 
+print(MODEL_PROVIDER)
+print(OLLAMA_MODEL)
+print(OPENAI_API_KEY)
 brain_instance = remi_brain(
         model_provider=MODEL_PROVIDER,
         ollama_model=OLLAMA_MODEL,
@@ -28,6 +28,7 @@ brain_instance = remi_brain(
         openai_model=OPENAI_MODEL
         )
 voice_instance = RemiVoice()
+
 # app = Flask(__name__)
 
 
@@ -66,14 +67,15 @@ async def handler(websocket):
         print(chatbot_response)
         # Generate, Play and stream the audio
         await websocket.send("START_STREAM")
-        voice_instance.process_and_play(websocket,chatbot_response, "cheerful")
+        await voice_instance.process_and_play(websocket,chatbot_response, "cheerful")
         await websocket.send("END_STREAM")
 
 
 
 async def main():
-    async with websockets.serve(handler, "localhost", 8080):
-        print("Server is running on ws://localhost:8080")
+
+    async with websockets.serve(handler, "localhost", 5000):
+        print("Server is running on ws://localhost:5000")
         await asyncio.Future()  # Run forever
 
 asyncio.run(main())    
